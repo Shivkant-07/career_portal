@@ -17,7 +17,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-5 py-4">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to={isAdmin ? "/admin/dashboard" : "/"} className="flex items-center gap-2">
           <span className="w-8 h-8 rounded-lg bg-brand-600 text-white grid place-items-center font-bold">
             C
           </span>
@@ -25,17 +25,13 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-6">
-          <Link to="/" className={linkClasses}>Home</Link>
-
-          {!isAdmin && (
+          {!isAdmin ? (
             <>
+              <Link to="/" className={linkClasses}>Home</Link>
               <Link to="/careers" className={linkClasses}>Careers</Link>
               <Link to="/login" className={linkClasses}>Login</Link>
-              
             </>
-          )}
-
-          {isAdmin && (
+          ) : (
             <>
               <Link to="/admin/dashboard" className={linkClasses}>Dashboard</Link>
               <Link to="/admin/applications" className={linkClasses}>Applications</Link>
