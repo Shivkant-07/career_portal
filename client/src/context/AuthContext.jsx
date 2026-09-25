@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-// Predefined admin account for this demo project
-const ADMIN_EMAIL = "admin@gmail.com";
-const ADMIN_PASSWORD = "admin@123";
+// Predefined admin account (can be overridden via .env)
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "admin@gmail.com";
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "admin@123";
 
 const AuthContext = createContext(null);
 
