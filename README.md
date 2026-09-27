@@ -5,15 +5,15 @@ A full-stack Career / Job Application Portal built with React, Node.js, Express 
 ## Folder structure
 
 ```
-careerconnect/
-├── client/   → React + Vite + Tailwind frontend
-└── server/   → Node.js + Express + Mongoose backend
+career_portal/
+├── frontend/  → React + Vite + Tailwind frontend
+└── backend/   → Node.js + Express + Mongoose backend
 ```
 
 ## 1. Backend setup
 
 ```bash
-cd server
+cd backend
 npm install
 cp .env.example .env
 ```
@@ -41,7 +41,7 @@ The API will start at `http://localhost:5000`.
 Open a new terminal:
 
 ```bash
-cd client
+cd frontend
 npm install
 cp .env.example .env
 ```

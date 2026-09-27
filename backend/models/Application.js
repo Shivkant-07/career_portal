@@ -23,7 +23,11 @@ const applicationSchema = new mongoose.Schema(
 
     // Application meta
     appliedFor: { type: String, required: true },
-    status: { type: String, default: "Pending" },
+    status: {
+      type: String,
+      enum: ["Pending", "Selected", "Rejected"],
+      default: "Pending",
+    },
   },
   { timestamps: true } // adds createdAt and updatedAt automatically
 );

@@ -29,3 +29,33 @@ export async function getApplications() {
 
   return data;
 }
+
+// GET /api/applications/:id -> fetch a single application
+export async function getApplicationById(id) {
+  const response = await fetch(`${API_URL}/applications/${id}`);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch application.");
+  }
+
+  return data;
+}
+
+// PATCH /api/applications/:id/status -> update status of an application
+export async function updateApplicationStatus(id, status) {
+  const response = await fetch(`${API_URL}/applications/${id}/status`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update application status.");
+  }
+
+  return data;
+}
+
