@@ -1,7 +1,6 @@
 import React, {
   createContext,
   useContext,
-  useEffect,
   useState,
 } from "react";
 
@@ -11,38 +10,33 @@ import {
 } from "../services/api";
 
 // Predefined admin account
-const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "admin@gmail.com";
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "admin@123";
+export const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "admin@gmail.com";
+export const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "admin@123";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [user, setUser] = useState(null);
+  // Synchronously initialize from localStorage so page refreshes don't flicker or redirect
+  const [isAdmin, setIsAdmin] = useState(
+    () => localStorage.getItem("cc_admin_token") === "true"
+  );
 
-  // Restore login after page refresh
-  useEffect(() => {
-    const adminToken = localStorage.getItem("cc_admin_token");
-    const userToken = localStorage.getItem("cc_user_token");
-    const savedUser = localStorage.getItem("cc_user");
-
-    if (adminToken === "true") {
-      setIsAdmin(true);
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem("cc_user");
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
     }
-
-    if (userToken && savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (e) {
-        localStorage.removeItem("cc_user");
-        localStorage.removeItem("cc_user_token");
-      }
-    }
-  }, []);
+  });
 
   // Admin Login
   const adminLogin = (email, password) => {
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    const normalizedEmail = (email || "").trim().toLowerCase();
+    if (
+      normalizedEmail === ADMIN_EMAIL.toLowerCase() &&
+      password === ADMIN_PASSWORD
+    ) {
       localStorage.setItem("cc_admin_token", "true");
       setIsAdmin(true);
 

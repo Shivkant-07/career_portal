@@ -45,6 +45,12 @@ export async function loginUser(credentials) {
 export async function submitApplication(applicationData) {
   const token = localStorage.getItem("cc_user_token");
 
+  if (!token) {
+    throw new Error(
+      "Please login or create an account first to submit your application."
+    );
+  }
+
   const response = await fetch(`${API_URL}/applications`, {
     method: "POST",
     headers: {
@@ -103,6 +109,10 @@ export async function getApplicationById(appId) {
 // Get logged-in user's applications
 export async function getMyApplications() {
   const token = localStorage.getItem("cc_user_token");
+
+  if (!token) {
+    return { success: true, count: 0, data: [] };
+  }
 
   const response = await fetch(`${API_URL}/applications/my`, {
     headers: {

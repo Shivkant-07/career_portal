@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth, ADMIN_EMAIL } from "../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -20,9 +20,11 @@ export default function Login() {
     setLoading(true);
 
     try {
+      const normalizedEmail = (email || "").trim().toLowerCase();
+
       // Check Admin Login
-      if (email === "admin@gmail.com") {
-        const result = adminLogin(email, password);
+      if (normalizedEmail === (ADMIN_EMAIL || "admin@gmail.com").toLowerCase()) {
+        const result = adminLogin(normalizedEmail, password);
 
         if (!result.success) {
           setError(result.message);
