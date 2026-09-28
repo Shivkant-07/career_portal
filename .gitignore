@@ -32,6 +32,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 *.tmp
+Screenshot*.png
 
 # Editor & OS files
 .DS_Store
