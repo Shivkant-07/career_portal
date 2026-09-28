@@ -1,4 +1,4 @@
-const API_URL =
+export const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 // Register user
@@ -152,6 +152,37 @@ export async function updateApplicationStatus(appId, status) {
   if (!response.ok) {
     throw new Error(
       data.message || "Failed to update application status."
+    );
+  }
+
+  return data;
+}
+
+
+// Update application - Candidate
+export async function updateApplication(appId, applicationData) {
+  const token = localStorage.getItem("cc_user_token");
+
+  if (!token) {
+    throw new Error(
+      "Please login or create an account first to update your application."
+    );
+  }
+
+  const response = await fetch(`${API_URL}/applications/${appId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(applicationData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to update application."
     );
   }
 

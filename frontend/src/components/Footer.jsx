@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-5 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
 
         <p className="text-sm text-slate-500">
-          &copy; {new Date().getFullYear()} CareerConnect. All rights reserved.
+          &copy; {new Date().getFullYear()} Career Portal. All rights reserved.
         </p>
 
         <div className="flex items-center gap-5 text-sm text-slate-500">

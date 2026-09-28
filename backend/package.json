@@ -1,7 +1,7 @@
 {
-  "name": "careerconnect-server",
+  "name": "career_portal-server",
   "version": "1.0.0",
-  "description": "CareerConnect - Express + MongoDB backend",
+  "description": "Career Portal - Express + MongoDB backend",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

@@ -15,7 +15,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/applications", applicationRoutes);
 
 app.get("/", (req, res) => {
-  res.send("CareerConnect API is running...");
+  res.send("Career Portal API is running...");
 });
 
 const PORT = process.env.PORT || 5000;

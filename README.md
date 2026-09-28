@@ -1,4 +1,4 @@
-# CareerConnect
+# Career Portal
 
 A full-stack Career / Job Application Portal built with React, Node.js, Express and MongoDB.
 
@@ -26,7 +26,7 @@ PORT=5000
 ```
 
 You can use a free MongoDB Atlas cluster, or a local MongoDB instance
-(`mongodb://127.0.0.1:27017/careerconnect`).
+(`mongodb://127.0.0.1:27017/career_portal`).
 
 Run the server:
 

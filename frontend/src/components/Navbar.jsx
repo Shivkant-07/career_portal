@@ -24,11 +24,11 @@ export default function Navbar() {
           className="flex items-center gap-2"
         >
           <span className="w-8 h-8 rounded-lg bg-brand-600 text-white grid place-items-center font-bold">
-            C
+            CP
           </span>
 
           <span className="text-lg font-bold text-slate-900">
-            CareerConnect
+            Career Portal
           </span>
         </Link>
 
