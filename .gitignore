@@ -17,11 +17,13 @@ node_modules/
 secrets.*
 credentials.*
 
-# Production builds
+# Production builds & cache
 dist/
 dist-ssr/
 build/
 out/
+.vite/
+*/.vite/
 
 # Logs & temp files
 *.log
