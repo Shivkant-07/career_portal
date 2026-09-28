@@ -3,6 +3,13 @@ const mongoose = require("mongoose");
 // Schema for a single job application submitted by a candidate
 const applicationSchema = new mongoose.Schema(
   {
+    // User who submitted the application
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     // Personal Details
     fullName: { type: String, required: true },
     email: { type: String, required: true },
@@ -23,13 +30,9 @@ const applicationSchema = new mongoose.Schema(
 
     // Application meta
     appliedFor: { type: String, required: true },
-    status: {
-      type: String,
-      enum: ["Pending", "Selected", "Rejected"],
-      default: "Pending",
-    },
+    status: { type: String, default: "Pending" },
   },
-  { timestamps: true } // adds createdAt and updatedAt automatically
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Application", applicationSchema);

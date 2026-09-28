@@ -1,7 +1,6 @@
 const Application = require("../models/Application");
 
-// @route   POST /api/applications
-// @desc    Save a new job application to MongoDB
+// Create new application
 const createApplication = async (req, res) => {
   try {
     const {
@@ -20,6 +19,7 @@ const createApplication = async (req, res) => {
       appliedFor,
     } = req.body;
 
+    // Check required fields
     if (!fullName || !email || !phone || !appliedFor) {
       return res.status(400).json({
         success: false,
@@ -27,7 +27,9 @@ const createApplication = async (req, res) => {
       });
     }
 
+    // Create application
     const newApplication = new Application({
+      userId: req.user.userId,
       fullName,
       email,
       phone,
@@ -41,7 +43,6 @@ const createApplication = async (req, res) => {
       projects,
       resumeLink,
       appliedFor,
-      status: "Pending",
     });
 
     const savedApplication = await newApplication.save();
@@ -53,6 +54,7 @@ const createApplication = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Something went wrong. Please try again.",
@@ -60,11 +62,14 @@ const createApplication = async (req, res) => {
   }
 };
 
-// @route   GET /api/applications
-// @desc    Get all applications, newest first
+
+// Get all applications - Admin
 const getApplications = async (req, res) => {
   try {
-    const applications = await Application.find().sort({ createdAt: -1 });
+    const applications = await Application.find().sort({
+      createdAt: -1,
+    });
+
     res.status(200).json({
       success: true,
       count: applications.length,
@@ -72,6 +77,7 @@ const getApplications = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Failed to fetch applications.",
@@ -79,12 +85,11 @@ const getApplications = async (req, res) => {
   }
 };
 
-// @route   GET /api/applications/:id
-// @desc    Get single application by ID
+
+// Get single application by ID - Admin
 const getApplicationById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const application = await Application.findById(id);
+    const application = await Application.findById(req.params.id);
 
     if (!application) {
       return res.status(404).json({
@@ -98,7 +103,8 @@ const getApplicationById = async (req, res) => {
       data: application,
     });
   } catch (error) {
-    console.error("Error fetching application:", error);
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Failed to fetch application.",
@@ -106,25 +112,52 @@ const getApplicationById = async (req, res) => {
   }
 };
 
-// @route   PATCH /api/applications/:id/status
-// @desc    Update application status (Pending, Selected, Rejected)
+
+// Get logged-in user's applications
+const getMyApplications = async (req, res) => {
+  try {
+    const applications = await Application.find({
+      userId: req.user.userId,
+    }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({
+      success: true,
+      count: applications.length,
+      data: applications,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch your applications.",
+    });
+  }
+};
+
 const updateApplicationStatus = async (req, res) => {
   try {
-    const { id } = req.params;
     const { status } = req.body;
 
-    const validStatuses = ["Pending", "Selected", "Rejected"];
-    if (!status || !validStatuses.includes(status)) {
+    const allowedStatuses = [
+      "Pending",
+      "Selected",
+      "Rejected",
+    ];
+
+    if (!allowedStatuses.includes(status)) {
       return res.status(400).json({
         success: false,
-        message: `Invalid status. Status must be one of: ${validStatuses.join(", ")}`,
+        message: "Invalid application status.",
       });
     }
 
     const application = await Application.findByIdAndUpdate(
-      id,
+      req.params.id,
       { status },
-      { new: true, runValidators: true }
+      { new: true }
     );
 
     if (!application) {
@@ -136,11 +169,12 @@ const updateApplicationStatus = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: `Application status updated to ${status} successfully.`,
+      message: "Application status updated successfully.",
       data: application,
     });
   } catch (error) {
-    console.error("Error updating application status:", error);
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Failed to update application status.",
@@ -148,9 +182,11 @@ const updateApplicationStatus = async (req, res) => {
   }
 };
 
+
 module.exports = {
   createApplication,
   getApplications,
   getApplicationById,
+  getMyApplications,
   updateApplicationStatus,
 };

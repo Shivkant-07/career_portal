@@ -258,12 +258,20 @@ export default function ApplicantDetails() {
             }
           />
           <Item
-            label="Application Date"
-            value={new Date(applicant.createdAt).toLocaleString()}
+            label="Application Date & Time"
+            value={
+              applicant.createdAt
+                ? new Date(applicant.createdAt).toLocaleString()
+                : "—"
+            }
           />
           <Item
-            label="Last Updated"
-            value={new Date(applicant.updatedAt || applicant.createdAt).toLocaleString()}
+            label="Last Updated Date & Time"
+            value={
+              applicant.updatedAt || applicant.createdAt
+                ? new Date(applicant.updatedAt || applicant.createdAt).toLocaleString()
+                : "—"
+            }
           />
         </Section>
       </div>

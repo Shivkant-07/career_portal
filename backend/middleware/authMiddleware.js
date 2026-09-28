@@ -1,10 +1,33 @@
-// Placeholder middleware.
-// Admin auth in this beginner-friendly demo is handled on the frontend
-// with a hardcoded admin account + localStorage token (see README).
-// Kept here so the folder structure matches a real project and can be
-// extended later with real JWT verification if needed.
+const jwt = require("jsonwebtoken");
+
 const protect = (req, res, next) => {
-  next();
+  try {
+    const authHeader = req.headers.authorization;
+
+    // Check token
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized. Please login first.",
+      });
+    }
+
+    // Get token
+    const token = authHeader.split(" ")[1];
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Store user information in request
+    req.user = decoded;
+
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired token.",
+    });
+  }
 };
 
 module.exports = { protect };
